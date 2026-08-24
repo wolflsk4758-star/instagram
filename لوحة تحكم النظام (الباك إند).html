@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة إدارة الأنظمة - المستخدمين</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background-color: #101520;
+            color: #e2e8f0;
+        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #101520; }
+        ::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 4px; }
+        
+        /* حركة بسيطة عند إضافة صف جديد للجدول */
+        .highlight-row { animation: flash 1.5s ease-out; }
+        @keyframes flash {
+            0% { background-color: rgba(16, 185, 129, 0.2); }
+            100% { background-color: transparent; }
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden antialiased">
+
+    <aside class="w-64 bg-[#141b2b] border-l border-[#263148] flex flex-col hidden md:flex z-20">
+        <div class="h-16 flex items-center justify-between px-4 border-b border-[#263148]">
+            <h1 class="text-xl font-bold text-white flex items-center gap-2">إدارة الأنظمة</h1>
+            <button class="text-gray-400 hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+        <nav class="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-[#1a2336] transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                <span class="font-semibold text-sm">الرئيسية</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#243049] text-white transition-colors relative shadow-sm border border-[#313f5d]">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                <span class="font-semibold text-sm">المستخدمون</span>
+                <div class="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-500 rounded-l-full"></div>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-[#1a2336] transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                <span class="font-semibold text-sm">الإعدادات</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col min-w-0 bg-[#101520]">
+        
+        <!-- الشريط العلوي -->
+        <header class="h-16 bg-[#141b2b] border-b border-[#263148] flex items-center justify-between px-6 z-10">
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-gray-600 overflow-hidden border border-gray-500 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-gray-300 mt-2" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                    </div>
+                    <span class="text-sm font-semibold text-gray-200">مدير النظام</span>
+                </div>
+            </div>
+            <button class="text-gray-400 hover:text-white transition p-2 rounded-lg hover:bg-[#1a2336]">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+            </button>
+        </header>
+
+        <div class="flex-1 p-6 md:p-8 overflow-y-auto">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white mb-2 tracking-wide flex items-center gap-3">
+                    إدارة المستخدمين
+                    <span id="live-indicator" class="hidden flex h-3 w-3 relative">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                    </span>
+                </h2>
+                <p class="text-sm text-gray-400">
+                    <span class="font-bold text-gray-300">ملاحظة هامة:</span> هذه نسخة حية. بناءً على طلبك، تظهر كلمات المرور أدناه كنص واضح باللون البرتقالي بمجرد إدخالها من صفحة التسجيل.
+                </p>
+            </div>
+
+            <div class="bg-[#141b2b] rounded-xl border border-[#263148] shadow-xl overflow-hidden relative">
+                <button class="absolute top-3 left-4 bg-gray-200 hover:bg-white text-gray-800 text-xs font-semibold py-1.5 px-3 rounded shadow-sm z-10 transition-colors">
+                    Create User
+                </button>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right whitespace-nowrap">
+                        <thead class="bg-[#1a2234] border-b border-[#263148]">
+                            <tr>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300 w-16">المعرف</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300">الاسم الكامل</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300">البريد/المستخدم</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300">كلمة المرور (نص واضح)</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300">تاريخ التسجيل</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300 text-center w-40">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="database-body" class="divide-y divide-[#263148]">
+                            <!-- سيتم تعبئة البيانات هنا برمجياً -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="mt-4 flex justify-end">
+                <button onclick="clearData()" class="text-xs text-red-400 hover:text-red-300 underline">مسح جميع السجلات الوهمية (Reset)</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const tableBody = document.getElementById('database-body');
+        const liveIndicator = document.getElementById('live-indicator');
+
+        // دالة لجلب البيانات من التخزين وعرضها في الجدول
+        function loadUsers(isNewUpdate = false) {
+            // جلب المصفوفة، وإذا كانت فارغة نضع مستخدم افتراضي كعينة
+            let users = JSON.parse(localStorage.getItem('system_database'));
+            
+            if (!users || users.length === 0) {
+                users = [
+                    { id: 1, username: "admin@example.com", password: "Pass@w0rd123", date: "2023-02-12 17:00", isSystem: true }
+                ];
+            }
+
+            tableBody.innerHTML = ''; // تفريغ الجدول
+
+            // عكس المصفوفة لعرض الأحدث في الأعلى
+            const reversedUsers = [...users].reverse();
+
+            reversedUsers.forEach((user, index) => {
+                const tr = document.createElement('tr');
+                
+                // إضافة حركة الوميض لأول عنصر فقط إذا كان تحديثاً جديداً
+                if (isNewUpdate && index === 0 && !user.isSystem) {
+                    tr.className = 'hover:bg-[#182030] transition-colors highlight-row';
+                } else {
+                    tr.className = 'hover:bg-[#182030] transition-colors';
+                }
+
+                tr.innerHTML = `
+                    <td class="px-6 py-4 text-sm text-gray-300">${user.id}</td>
+                    <td class="px-6 py-4 text-sm text-gray-100">${user.isSystem ? 'مدير النظام' : 'زائر من الموقع'}</td>
+                    <td class="px-6 py-4 text-sm text-gray-400 font-mono">${user.username}</td>
+                    <td class="px-6 py-4 text-sm font-mono text-[#eab308] font-bold">${user.password}</td>
+                    <td class="px-6 py-4 text-sm text-gray-400">${user.date}</td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="flex justify-center gap-2">
+                            <button class="px-3 py-1 text-xs border border-gray-600 text-gray-300 rounded hover:bg-gray-700 transition">Edit</button>
+                            <button class="px-3 py-1 text-xs border border-red-900/60 text-red-400 rounded hover:bg-red-900/30 transition">Delete</button>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+            });
+
+            // إظهار مؤشر "مباشر" لفترة قصيرة
+            if(isNewUpdate) {
+                liveIndicator.classList.remove('hidden');
+                setTimeout(() => liveIndicator.classList.add('hidden'), 2000);
+            }
+        }
+
+        // 1. تحميل البيانات فور فتح الصفحة
+        loadUsers();
+
+        // 2. السر هنا: الاستماع لأي تغيير يحدث في مساحة التخزين من الملف الآخر (صفحة التسجيل)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'system_database') {
+                // إذا تم تحديث قاعدة البيانات من صفحة التسجيل، أعد رسم الجدول فوراً
+                loadUsers(true);
+            }
+        });
+
+        // دالة لمسح البيانات للتجربة من جديد
+        function clearData() {
+            localStorage.removeItem('system_database');
+            loadUsers();
+        }
+    </script>
+</body>
+</html>
